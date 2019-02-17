@@ -1,4 +1,9 @@
 # Created by .ignore support plugin (hsz.mobi)
-.idea/
-target/
-*.iml
+Bebug
+Release
+*.opensdf
+*.sdf
+*.sln
+*.suo
+*.vcxproj
+*.vcxproj.filters

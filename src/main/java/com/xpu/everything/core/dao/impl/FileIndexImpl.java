@@ -127,7 +127,7 @@ public class FileIndexImpl implements FileIndexDao{
         condition.setLimit(3);
         //condition.setFiletype("PNG");
         condition.setOrderByAsc(true);
-
+        //中文
         List<Thing> search = fileIndex.search(condition);
         for(Thing s: search){
             System.out.println(s);
