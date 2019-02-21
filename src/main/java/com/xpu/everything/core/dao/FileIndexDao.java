@@ -21,4 +21,11 @@ public interface FileIndexDao {
      * @return 检索结果
      */
     List<Thing> search(Condition condition);
+
+
+    /**
+     * 删除不存在数据
+     * @param thing 要删除的文件
+     */
+    void delete(Thing thing);
 }

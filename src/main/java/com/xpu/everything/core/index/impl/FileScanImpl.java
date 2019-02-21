@@ -16,8 +16,6 @@ public class FileScanImpl implements FileScan {
     @Override
     public void index(String path) {
         File file = new File(path);
-        //List<File> filelist = new ArrayList<>();
-
         if(file.isFile()){
             if(config.getExcludePath().contains(file.getParent())){
                 return;

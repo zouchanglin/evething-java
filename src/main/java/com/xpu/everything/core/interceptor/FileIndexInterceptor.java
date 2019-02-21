@@ -17,6 +17,5 @@ public class FileIndexInterceptor implements FileInterceptor {
     public void apply(File file) {
         Thing thing = FileConverThing.convert(file);
         fileIndexDao.insert(thing);
-        System.out.println("Thing-->DB:"+thing);
     }
 }

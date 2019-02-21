@@ -1,6 +1,5 @@
 package com.xpu.everything.core.dao.impl;
 
-import com.xpu.everything.core.dao.DataSourceFactory;
 import com.xpu.everything.core.dao.FileIndexDao;
 import com.xpu.everything.core.model.Condition;
 import com.xpu.everything.core.model.FileType;
@@ -28,24 +27,19 @@ public class FileIndexImpl implements FileIndexDao{
 
         try{
             conn = dataSource.getConnection();
-            String sql = "insert into file_index(name, path, depth, file_type) values (?,?,?,?)";
+            final String sql = "insert into file_index(name, path, depth, file_type) values (?,?,?,?)";
+
             statement = conn.prepareStatement(sql);
             statement.setString(1, thing.getName());
             statement.setString(2, thing.getPath());
             statement.setInt(3, thing.getDepth());
             statement.setString(4, thing.getFileType().name());
-
+            //System.out.println("Insert SQL:"+sql);
             statement.executeUpdate();
 
         }catch (SQLException e){
             e.printStackTrace();
         }finally {
-//            try {
-//                statement.close();
-//                conn.close();
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
             releaseResource(null,statement,conn);
         }
     }
@@ -81,13 +75,18 @@ public class FileIndexImpl implements FileIndexDao{
                         .append(condition.getFiletype().toUpperCase()).append("'");
             }
             //orderByAsc
-            sqlBuilder.append(" order by depth ")
-                    .append(condition.getOrderByAsc() ? "asc": "desc");
-            //limit
-            sqlBuilder.append(" limit ").append(condition.getLimit())
-                    .append(" offset 0");
+            if(condition.getOrderByAsc() != null) {
+                sqlBuilder.append(" order by depth ")
+                        .append(condition.getOrderByAsc() ? "asc" : "desc");
+            }
 
-            System.out.println("sqlBuilder:"+sqlBuilder);
+            if(condition.getLimit() != null){
+                //limit
+                sqlBuilder.append(" limit ").append(condition.getLimit())
+                        .append(" offset 0");
+            }
+            //TODO SQL打印
+            //System.out.println("SearchSQL:"+sqlBuilder);
             statement = conn.prepareStatement(sqlBuilder.toString());
             resultSet = statement.executeQuery();
 
@@ -112,27 +111,22 @@ public class FileIndexImpl implements FileIndexDao{
         return things;
     }
 
-    public static void main(String[] args) {
-        Thing t = new Thing();
-        t.setName("aaa.ppt");
-        t.setPath("D:\\a\\test\\aaa.ppt");
-        t.setDepth(3);
-        t.setFileType(FileType.DOC);
+    @Override
+    public void delete(Thing thing) {
+        Connection conn = null;
+        PreparedStatement statement = null;
 
-        FileIndexImpl fileIndex = new FileIndexImpl(DataSourceFactory.getDataSource());
-        //fileIndex.insert(t);
-
-        Condition condition = new Condition();
-        condition.setName("a");
-        condition.setLimit(3);
-        //condition.setFiletype("PNG");
-        condition.setOrderByAsc(true);
-        //中文
-        List<Thing> search = fileIndex.search(condition);
-        for(Thing s: search){
-            System.out.println(s);
+        try{
+            conn = dataSource.getConnection();
+            //清理更多的文件
+            final String sql = "delete from file_index where path like '"+thing.getPath()+"%'";
+            statement = conn.prepareStatement(sql);
+            statement.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            releaseResource(null,statement,conn);
         }
-
     }
 
     //重构：解决内部重复代码问题

@@ -1,6 +1,7 @@
 package com.xpu.everything.core.dao;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.xpu.everything.config.EverythingConfig;
 import org.apache.commons.io.IOUtils;
 
 import javax.sql.DataSource;
@@ -23,20 +24,21 @@ public class DataSourceFactory {
             synchronized (DataSourceFactory.class) {
                 if (dataSource == null) {
                     dataSource = new DruidDataSource();
-                    //dataSource.setDriverClassName("com.mysql");
                     dataSource.setDriverClassName("org.h2.Driver");
                     //获取当前工程路径
-                    String workdir = System.getProperty("user.dir");
-                    dataSource.setUrl("jdbc:h2:" + workdir + File.separator + "everything");
+                    dataSource.setUrl("jdbc:h2:" + EverythingConfig.getInstance().getH2IndexPath());
+                    System.out.println("jdbc:h2:" + EverythingConfig.getInstance().getH2IndexPath());
+                    //方式一：dataSource.setValidationQuery("select now()");
+                    dataSource.setTestWhileIdle(false);
                 }
             }
         }
         return dataSource;
     }
+
     public static void initDatabase(){
         //获取数据源
         DataSource dataSource = getDataSource();
-
         //获取SQL语句
         InputStream inputStream = DataSourceFactory.class.getClassLoader()
                 .getResourceAsStream("everything.sql");
@@ -44,11 +46,11 @@ public class DataSourceFactory {
         //try-with-resource
         String sql = null;
         try {
+            assert inputStream != null;
             sql = IOUtils.toString(inputStream, "UTF-8");
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         //执行SQL
         try {
@@ -63,9 +65,4 @@ public class DataSourceFactory {
             e.printStackTrace();
         }
     }
-
-    public static void main(String[] args) {
-        initDatabase();
-    }
-
 }

@@ -12,3 +12,5 @@ create table if not exists file_index(
 
 );
 
+-- 建立索引
+-- create index file_name on file_index(name);

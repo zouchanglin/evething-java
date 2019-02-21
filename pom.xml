@@ -13,6 +13,7 @@
 
     <!-- 编译目标 -->
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <encoding>UTF-8</encoding>
         <java.version>1.8</java.version>
         <maven.complier.target>1.8</maven.complier.target>
@@ -60,31 +61,49 @@
     <build>
 
         <plugins>
-            <!-- 编译插件 -->
+            <!--编译插件-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>3.6.1</version>
+            </plugin>
+            <!--依赖管理插件-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${project.build.directory}/lib
+                            </outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- 打包插件 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
+                <version>3.1.1</version>
                 <configuration>
                     <archive>
                         <manifest>
                             <!-- 配置主类 -->
-                            <mainClass>
-                                com.xpu.everything.cmd.EverythingCmdApp
-                            </mainClass>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib</classpathPrefix>
+                            <mainClass>com.xpu.everything.cmd.EverythingCmdApp</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
             </plugin>
-
-            <!--  -->
         </plugins>
 
     </build>

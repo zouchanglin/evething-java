@@ -8,11 +8,31 @@ import java.util.Set;
  * 文件类型
  */
 public enum FileType {
+    /**
+     * 这些是文件的类型
+     */
     IMG("png", "jpeg", "jpg", "gif", "bmp"),
+    /**
+     * 代码文件
+     */
     SRC("java", "c", "cpp", "h", "hpp", "cc", "py"),
+    /**
+     * 文档
+     */
     DOC("ppt", "pptx", "doc","docx","pdf", "xls", "xlsx", "pdf", "txt", "md"),
+
+    /**
+     * 二进制可执行
+     */
     BIN("exe", "sh", "jar", "msi"),
+    /**
+     * 归档
+     */
     ARCHIVE("rar", "zip", "7z"),
+
+    /**
+     * 其他类型
+     */
     OTHER("*");
 
 
@@ -48,8 +68,8 @@ public enum FileType {
 
     /**
      * 根据文件类型名（String）获取文件类型对象
-     * @param name
-     * @return
+     * @param name 要查找的文件名
+     * @return 返回文件类型
      */
     public static FileType lookupByName(String name){
         for (FileType filetype: FileType.values()) {
