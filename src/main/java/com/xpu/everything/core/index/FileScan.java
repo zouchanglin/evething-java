@@ -5,7 +5,7 @@ import com.xpu.everything.core.interceptor.FileInterceptor;
 public interface FileScan {
     /**
      * 建立索引,遍历path
-     * @param需要遍历的路径
+     * @param path 需要遍历的路径
      */
     void index(String path);
 

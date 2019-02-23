@@ -13,6 +13,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Dao层操作，Thing数据插入，删除对应的Thing，查找Thing
+ */
 public class FileIndexImpl implements FileIndexDao{
     private final DataSource dataSource;
 
@@ -20,6 +23,10 @@ public class FileIndexImpl implements FileIndexDao{
         this.dataSource = dataSource;
     }
 
+    /**
+     * 将Thing插入数据库
+     * @param thing 需要插入的数据
+     */
     @Override
     public void insert(Thing thing) {
         Connection conn = null;
@@ -34,7 +41,6 @@ public class FileIndexImpl implements FileIndexDao{
             statement.setString(2, thing.getPath());
             statement.setInt(3, thing.getDepth());
             statement.setString(4, thing.getFileType().name());
-            //System.out.println("Insert SQL:"+sql);
             statement.executeUpdate();
 
         }catch (SQLException e){
@@ -44,6 +50,12 @@ public class FileIndexImpl implements FileIndexDao{
         }
     }
 
+
+    /**
+     * 查找符合条件的Thing存入List集合
+     * @param condition 检索条件
+     * @return 查找结果List<Thing>集合
+     */
     @Override
     public List<Thing> search(Condition condition) {
         List<Thing> things = new ArrayList<>();
@@ -57,12 +69,7 @@ public class FileIndexImpl implements FileIndexDao{
             String sql = "select name, path, depth, file_type from file_index";
 
             //查询时优先选择深度最小
-            //name : like
-            //fileType: =
-            //limit: limit offset
-            //orderByAsc
             StringBuilder sqlBuilder = new StringBuilder();
-            //select name, path, depth, file_type from file_index where  name like '%' condition.getName() %' and file_type = '
             sqlBuilder.append(sql);
             //name匹配
             sqlBuilder.append(" where ")
@@ -85,8 +92,6 @@ public class FileIndexImpl implements FileIndexDao{
                 sqlBuilder.append(" limit ").append(condition.getLimit())
                         .append(" offset 0");
             }
-            //TODO SQL打印
-            //System.out.println("SearchSQL:"+sqlBuilder);
             statement = conn.prepareStatement(sqlBuilder.toString());
             resultSet = statement.executeQuery();
 
@@ -111,6 +116,10 @@ public class FileIndexImpl implements FileIndexDao{
         return things;
     }
 
+    /**
+     * 根据Thing删除数据库中的数据
+     * @param thing 要删除的文件
+     */
     @Override
     public void delete(Thing thing) {
         Connection conn = null;
@@ -129,6 +138,7 @@ public class FileIndexImpl implements FileIndexDao{
         }
     }
 
+    //资源回收
     //重构：解决内部重复代码问题
     private void releaseResource(ResultSet resultSet, PreparedStatement statement, Connection conn) {
         if(statement != null) {

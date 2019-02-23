@@ -32,16 +32,34 @@ import java.util.stream.Collectors;
  * 调度器类
  */
 public class EverythingManager {
+    /**
+     * 单例自身实例对象
+     */
     private static volatile EverythingManager manager;
+
+    /**
+     * 文件搜索实现类对象
+     */
     private FileSearch fileSearch;
+
+    /**
+     * 文件扫描实现类对象
+     */
     private FileScan fileScan;
 
     /**
      * 清理删除的文件
      */
     private ThingClearInterceptor thingClearInterceptor;
+
+    /**
+     * 后台清理线程实例对象
+     */
     private Thread backgroundClearThread;
 
+    /**
+     * 线程池对象
+     */
     private ExecutorService executorService;
 
     //标识后台线程的状态
@@ -74,7 +92,7 @@ public class EverythingManager {
     }
 
     /**
-     * 索引
+     * 构建索引
      */
     public void buildIndex(){
         initOrResetDataBases();
@@ -126,7 +144,6 @@ public class EverythingManager {
         //业务层的对象
         this.fileScan = new FileScanImpl();
         this.fileSearch = new FileSearchImpl(fileIndexDao);
-        //Print用于调试
         //this.fileScan.interceptor(new FilePrintInterceptor());
         this.fileScan.interceptor(new FileIndexInterceptor(fileIndexDao));
 
@@ -145,8 +162,6 @@ public class EverythingManager {
         if(!new File(path+".mv.db").exists()){
             DataSourceFactory.initDatabase();
             System.out.println("初始化数据库");
-            //自动构建索引
-            //buildIndex();
         }
     }
 
@@ -196,7 +211,9 @@ public class EverythingManager {
         }).start();
     }
 
-
+    /**
+     * 停止文件系统监听
+     */
     public void stopFileSystemMonitor(){
         try {
             this.fileWatch.getFileAlterationMonitor().stop();

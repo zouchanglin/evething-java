@@ -10,5 +10,9 @@ public interface FileWatch {
     void monitor(HandlePath handlePath);
 
 
+    /**
+     * 获取FileAlterationMonitor监听器实例对象
+     * @return FileAlterationMonitor监听器实例对象
+     */
     FileAlterationMonitor getFileAlterationMonitor();
 }

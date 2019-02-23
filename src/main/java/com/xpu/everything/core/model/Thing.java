@@ -3,7 +3,7 @@ package com.xpu.everything.core.model;
 import lombok.Data;
 
 /**
- * 文件属性信息索引之后的记录Thing表示
+ * 文件属性信息索引之后的记录，Thing表示
  */
 @Data   //getter/setter/toString....
 public class Thing {

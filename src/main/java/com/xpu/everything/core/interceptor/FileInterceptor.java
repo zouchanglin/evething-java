@@ -3,7 +3,7 @@ package com.xpu.everything.core.interceptor;
 import java.io.File;
 
 /**
- * 函数接口
+ * 文件过滤器函数接口
  */
 @FunctionalInterface
 public interface FileInterceptor {

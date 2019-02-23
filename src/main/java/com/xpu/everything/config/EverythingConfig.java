@@ -49,6 +49,10 @@ public final class EverythingConfig {
         //遍历的目录
     }
 
+    /**
+     * 获取工程配置器实例
+     * @return 工程配置器实例
+     */
     public static EverythingConfig getInstance(){
         if(config == null){
             synchronized (EverythingConfig.class){
