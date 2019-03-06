@@ -1,4 +1,10 @@
 # 项目简介
-这是一个java版本的Everything小工具，在Windows上你可以使用everything这款小工具，但是Linux却没有像这样的工具，只有一堆命令去检索文件，而且效率不高，这款文件检索系统的数据库采用H2，H2是一个纯Java写的一个嵌入式数据库，搜索快速，人性化
+此项目是一个使用Java实现的类似于Everything-Windows桌面应用程序的搜索工具，基于Java命令行，可以达到比原生桌面应用Everything更快的搜索效率，自动扫描文件系统更新数据库的数据，方便各大平台的文件检索！
+
 
 # 项目使用技术
+1、Java文件操作的API，多线程操作的API
+2、Database采用H2嵌入式数据库，方便快捷
+3、JDBC技术操作数据库，使用阿里巴巴的开源数据库连接池Druid
+4、Lombok库，轻松搞定JavaBean
+5、文件监控系统使用Apache Commons IO
